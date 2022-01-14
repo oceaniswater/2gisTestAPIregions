@@ -6,7 +6,6 @@ import os
 class ApiRegions:
     parser = configparser.ConfigParser()
     parser.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'config.ini'))
-    parser.read('config.ini')
 
     BASE_URL = parser.get('2gis', 'basic_url')
 
