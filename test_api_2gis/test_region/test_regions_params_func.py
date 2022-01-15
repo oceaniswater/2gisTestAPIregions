@@ -45,6 +45,7 @@ def test_get_regions():
 # Проверяем country_code:
 # Может принимать значения: ru, kg, kz, cz (проверяю, что регионы выводятся согласно фильтру) (required)
 # По умолчанию отображаются регионы из всех стран (required)
+# Проверяем, что сервер корректно обрабатывает запрос с невалидным значением параметра
 
 
 @pytest.mark.parametrize("country_code", ["ru", "cz", "ua", "kz", "kg"])
@@ -86,6 +87,14 @@ def test_get_regions_all_country_code():
     assert countryCodeSet == {'ru', 'cz', 'ua', 'kz', 'kg'}
 
 
+@pytest.mark.parametrize("country_code", ["-1", "0", "u", "rus", "*"])
+def test_get_regions_country_code_invalid(country_code):
+    result: Response = ApiRegions.get_regions(page_size=15)
+    assert result.status_code == 400
+    response_json = result.json()
+    assert response_json['error']['message'] == "Параметр 'country_code' может быть одним из следующих значений: ru, kg, kz, cz, ua"
+
+
 # Проверяем page_size:
 # Может принимать значения: 5, 10, 15 (required)
 # Значение по умолчанию == 15 (required)
@@ -122,14 +131,15 @@ def test_get_regions_page_size_invalid(page_size):
 
 
 # Проверяем параметр q:
-# Минимум — 3 символа (required) проверяем, что сервер корректно реагирует на отправку валидных/невалидных значений
+# Минимум — 3 символа (required) проверяем, что сервер корректно реагирует на отправку валидных/невалидных значений (>3)
+# Проверяем, что сервер корректно обрабатывает запрос с максимальным количеством символов (граничные значения)
 # Регистр не имеет значения + вхождение (required)
 # Если передан этот параметр, все остальные игнорируются (required)
 # Пустой ответ, на запрос города, которого нет в БД
 
 
 @pytest.mark.parametrize("q", ["", " ", "а", "ва", "ква"])
-def test_get_regions_q_len(q):
+def test_get_regions_q_min_len(q):
     result: Response = ApiRegions.get_regions(q=q)
     if len(q) >= 3:
         assert result.status_code == 200
@@ -140,6 +150,20 @@ def test_get_regions_q_len(q):
         assert result.status_code == 400
         response_json = result.json()
         assert response_json['error']['message'] == "Параметр 'q' должен быть не менее 3 символов"
+
+
+@pytest.mark.parametrize("q", ["a" * 29, "а" * 30, "а" * 31])
+def test_get_regions_q_max_len(q):
+    result: Response = ApiRegions.get_regions(q=q)
+    if len(q) <= 30:
+        assert result.status_code == 200
+        response_json = result.json()
+        assert isinstance(response_json['total'], int)
+        assert isinstance(response_json['items'], list)
+    else:
+        assert result.status_code == 400
+        response_json = result.json()
+        assert response_json['error']['message'] == "Параметр 'q' должен быть не более 30 символов"
 
 
 @pytest.mark.parametrize("q", ["Москва", "москва", "ква"])
