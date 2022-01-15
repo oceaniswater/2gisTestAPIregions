@@ -111,10 +111,7 @@ def test_get_regions_page_size_default():
     result: Response = ApiRegions.get_regions()
     assert 200 == result.status_code
     response_json = result.json()
-    countItem = 0
-    for _ in response_json['items']:
-        countItem += 1
-    assert countItem == 15
+    assert len(response_json['items']) == 15
 
 
 @pytest.mark.parametrize("page_size", ["-1", "0", "4", "9", "14", "16"])
