@@ -60,11 +60,9 @@ def test_get_regions_country_code_filter(country_code):
             assert result.status_code == 200
             response_json = result.json()
             for item in response_json['items']:
-                print(item['country']['code'])
                 assert country_code == item['country']['code']
     else:
         for item in response_json['items']:
-            print(item['country']['code'])
             assert country_code == item['country']['code']
 
 
