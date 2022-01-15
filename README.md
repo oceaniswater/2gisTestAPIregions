@@ -8,7 +8,7 @@
 ## Структура проекта
 
 * test_api_2gis/test_region/test_regions_params_func.py -  функциональные тесты
-* test_api_2gis/utils/ApiRegions.py - APIRegions manager (для каждого раздела API создается свой класс)
+* test_api_2gis/utils/ApiRegions.py - APIRegions 
 * test_api_2gis/config.ini - конфиг файл, в котором прописан базовый url
 
 ### Пример теста
