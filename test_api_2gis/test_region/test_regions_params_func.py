@@ -1,4 +1,5 @@
 import pytest
+import math
 
 from requests import Response
 from test_api_2gis.utils.ApiRegions import ApiRegions
@@ -22,24 +23,24 @@ def test_get_regions():
         assert response_json['items'] == []
     else:
         assert response_json['items'] != []
-        idsCityCountSet = set()
+        idsCitySet = set()
 
         if total > 5:
-            page_count = (response_json['total'] // 5) + 1
+            page_count = math.ceil((response_json['total'] / 5))
             for n in range(1, page_count + 1):
                 result: Response = ApiRegions.get_regions(page_size=5, page=n)
                 assert result.status_code == 200
                 response_json = result.json()
                 for item in response_json['items']:
-                    idsCityCountSet.add(item['id'])
-            assert total == len(idsCityCountSet)
+                    idsCitySet.add(item['id'])
+            assert total == len(idsCitySet)
         else:
             result: Response = ApiRegions.get_regions()
             assert result.status_code == 200
             response_json = result.json()
             for item in response_json['items']:
-                idsCityCountSet.add(item['id'])
-            assert total == len(idsCityCountSet)
+                idsCitySet.add(item['id'])
+            assert total == len(idsCitySet)
 
 
 # Проверяем country_code:
@@ -54,7 +55,7 @@ def test_get_regions_country_code_filter(country_code):
     assert result.status_code == 200
     response_json = result.json()
     if response_json['total'] > 15:
-        page_count = (response_json['total'] // 15) + 1
+        page_count = math.ceil((response_json['total'] / 15))
         for n in range(1, page_count + 1):
             result: Response = ApiRegions.get_regions(country_code=country_code, page=n)
             assert result.status_code == 200
@@ -72,7 +73,7 @@ def test_get_regions_all_country_code():
     response_json = result.json()
     countryCodeSet = set()
     if response_json['total'] > 15:
-        page_count = (response_json['total'] // 15) + 1
+        page_count = math.ceil((response_json['total'] / 15))
         for n in range(1, page_count + 1):
             result: Response = ApiRegions.get_regions(page=n)
             response_json = result.json()
@@ -199,7 +200,7 @@ def test_get_regions_page_empty_result():
     assert result.status_code == 200
     response_json = result.json()
     if response_json['total'] > 5:
-        page_count = (response_json['total'] // 5) + 1
+        page_count = math.ceil((response_json['total'] / 5))
         result: Response = ApiRegions.get_regions(page=page_count + 1)
         response_json = result.json()
         assert response_json != []
