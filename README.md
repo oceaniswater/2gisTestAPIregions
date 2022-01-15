@@ -7,8 +7,8 @@
 
 ## Структура проекта
 
-* test_api_2gis/test_region/test_regions_params_func.py -  функциональные тесты
-* test_api_2gis/utils/ApiRegions.py - APIRegions 
+* test_api_2gis/test_region/test_regions_params_func.py -  функциональные тесты api regions
+* test_api_2gis/utils/ApiRegions.py - APIRegions + requests
 * test_api_2gis/config.ini - конфиг файл, в котором прописан базовый url
 
 ### Пример теста
@@ -24,7 +24,7 @@ def test_get_regions_page_size_valid(page_size):
     assert len(response_json['items']) == int(page_size)
 ```
 
-### Пример APIManager (ApiRegions)
+### Пример
 
 ```
 class ApiRegions:
