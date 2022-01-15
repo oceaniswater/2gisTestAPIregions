@@ -87,11 +87,11 @@ def test_get_regions_all_country_code():
 
 @pytest.mark.parametrize("country_code", ["-1", "0", "u", "rus", "*"])
 def test_get_regions_country_code_invalid(country_code):
-    result: Response = ApiRegions.get_regions(page_size=15)
+    result: Response = ApiRegions.get_regions(page_size=15, country_code=country_code)
     assert result.status_code == 400
     response_json = result.json()
     assert response_json['error']['message'] == "Параметр 'country_code' может быть одним из следующих значений: ru, kg, kz, cz, ua"
-
+    assert isinstance(response_json['error']['id'], str)
 
 # Проверяем page_size:
 # Может принимать значения: 5, 10, 15 (required)
@@ -243,4 +243,4 @@ def test_get_regions_page_bad_request(page):
     result: Response = ApiRegions.get_regions(page=page)
     assert result.status_code == 400
     response_json = result.json()
-    assert "Параметр 'page' должен быть больше 0" == response_json['error']['message']
+    assert response_json['error']['message'] == "Параметр 'page' должен быть больше 0"
