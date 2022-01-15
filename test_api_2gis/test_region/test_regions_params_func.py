@@ -120,7 +120,7 @@ def test_get_regions_page_size_invalid(page_size):
     assert result.status_code == 400
     response_json = result.json()
     assert response_json['error']['message'] == "Параметр 'page_size' может быть одним из следующих значений: 5, 10, 15"
-
+    assert isinstance(response_json['error']['id'], str)
 
 # Проверяем параметр q:
 # Минимум — 3 символа (required) проверяем, что сервер корректно реагирует на отправку валидных/невалидных значений (>3)
@@ -142,7 +142,7 @@ def test_get_regions_q_min_len(q):
         assert result.status_code == 400
         response_json = result.json()
         assert response_json['error']['message'] == "Параметр 'q' должен быть не менее 3 символов"
-
+        assert isinstance(response_json['error']['id'], str)
 
 @pytest.mark.parametrize("q", ["a" * 29, "а" * 30, "а" * 31])
 def test_get_regions_q_max_len(q):
@@ -156,7 +156,7 @@ def test_get_regions_q_max_len(q):
         assert result.status_code == 400
         response_json = result.json()
         assert response_json['error']['message'] == "Параметр 'q' должен быть не более 30 символов"
-
+        assert isinstance(response_json['error']['id'], str)
 
 @pytest.mark.parametrize("q", ["Москва", "москва", "ква"])
 def test_get_regions_q(q):
@@ -244,3 +244,4 @@ def test_get_regions_page_bad_request(page):
     assert result.status_code == 400
     response_json = result.json()
     assert response_json['error']['message'] == "Параметр 'page' должен быть больше 0"
+    assert isinstance(response_json['error']['id'], str)
