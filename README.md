@@ -1,9 +1,9 @@
 # 2gisTestAPIregions
 
-Автотесты для API https://regions-test.2gis.com/1.0/regions \n
-Язык: Python3 \n
-Фреймворк: Pytest \n
-Библиотеки: requests, configparser, os \n
+Автотесты для API https://regions-test.2gis.com/1.0/regions
+* Язык: Python3 
+* Фреймворк: Pytest 
+* Библиотеки: requests, configparser, os 
 
 ## Структура проекта
 
