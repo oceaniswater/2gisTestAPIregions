@@ -104,10 +104,7 @@ def test_get_regions_page_size_valid(page_size):
     result: Response = ApiRegions.get_regions(page_size=page_size)
     assert result.status_code == 200
     response_json = result.json()
-    countItem = 0
-    for _ in response_json['items']:
-        countItem += 1
-    assert countItem == int(page_size)
+    assert len(response_json['items']) == int(page_size)
 
 
 def test_get_regions_page_size_default():
