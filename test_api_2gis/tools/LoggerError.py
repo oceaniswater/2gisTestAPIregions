@@ -1,4 +1,3 @@
-# from concurrent.futures._base import LOGGER
 from test_api_2gis.tools.CurlReurn import CurlReturn
 import logging
 
@@ -6,8 +5,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 class LoggerError:
-    LOGGER = logging.getLogger(__name__)
-
     @staticmethod
     def logging_error(result):
         if result.status_code >= 400:
