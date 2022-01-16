@@ -1,11 +1,9 @@
 import configparser
-from concurrent.futures._base import LOGGER
+from test_api_2gis.tools.LoggerError import LoggerError
+
 
 import requests
 import os
-import logging
-
-LOGGER = logging.getLogger(__name__)
 
 
 class ApiRegions:
@@ -24,11 +22,6 @@ class ApiRegions:
         payload = args
         result = requests.request("GET", url, headers=headers, params=payload)
 
-        if result.status_code >= 400:
-            if result.status_code < 500:
-                response_json = result.json()
-                LOGGER.info(f"Error code: {result.status_code} -- id: {response_json['error']['id']}")
-        if result.status_code == 500:
-            LOGGER.info(f"Error code: {result.status_code}")
+        LoggerError.logging_error(result)
 
         return result
