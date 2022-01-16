@@ -1,18 +1,14 @@
 import configparser
-from test_api_2gis.tools.LoggerError import LoggerError
-
-
 import requests
 import os
+from test_api_2gis.tools.LoggerError import LoggerError
 
 
 class ApiRegions:
     parser = configparser.ConfigParser()
     parser.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', 'config.ini'))
 
-
     BASE_URL = parser.get('2gis', 'basic_url')
-
     REGIONS = BASE_URL + "/1.0/regions"
 
     @staticmethod
