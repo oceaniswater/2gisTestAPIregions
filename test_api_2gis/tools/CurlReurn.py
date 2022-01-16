@@ -1,7 +1,7 @@
 class CurlReturn:
     @staticmethod
     def curlReturn(result):
-        command = "curl --location --request {method} '{uri}' --header {headers} --data-raw '{data}' \n#\n"
+        command = "curl --location --request {method} '{uri}' --header {headers} --data-raw '{data}'"
         method = result.request.method
         uri = result.request.url
         data = result.request.body
