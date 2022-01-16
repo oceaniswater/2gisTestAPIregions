@@ -3,7 +3,7 @@
 Автотесты для API https://regions-test.2gis.com/1.0/regions
 * Язык: Python3 
 * Фреймворк: Pytest 
-* Библиотеки: requests, configparser, os 
+* Библиотеки: requests, configparser, os, logging
 
 ## Структура проекта
 
