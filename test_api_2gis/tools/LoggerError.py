@@ -1,4 +1,4 @@
-from test_api_2gis.tools.CurlReurn import CurlReturn
+from test_api_2gis.tools.CurlReturn import CurlReturn
 import logging
 
 LOGGER = logging.getLogger(__name__)
