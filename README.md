@@ -11,7 +11,7 @@ Automation API teststhe  for https://regions-test.2gis.com/1.0/regions
 * test_api_2gis/utils/ApiRegions.py ------------------------- APIRegions + requests
 * test_api_2gis/config.ini ----------------------------------- конфиг файл, в котором прописан базовый url
 * test_api_2gis/tools/LoggerError.py ------------------------ логер ошибок 4хх и 5хх
-* test_api_2gis/tools/CurlReurn.py -------------------------- cURL maker
+* test_api_2gis/tools/CurlReturn.py -------------------------- cURL maker
 
 ### Example of test
 
