@@ -1,11 +1,11 @@
 # 2gisTestAPIregions
 
-Автотесты для API https://regions-test.2gis.com/1.0/regions
-* Язык: Python3 
-* Фреймворк: Pytest 
-* Библиотеки: requests, configparser, os, logging
+Automation API teststhe  for https://regions-test.2gis.com/1.0/regions
+* language: Python3 
+* framework: Pytest 
+* libs: requests, configparser, os, logging
 
-## Структура проекта
+## Structure of the project
 
 * test_api_2gis/test_region/test_regions_params_func.py -- функциональные тесты api regions
 * test_api_2gis/utils/ApiRegions.py ------------------------- APIRegions + requests
@@ -13,10 +13,9 @@
 * test_api_2gis/tools/LoggerError.py ------------------------ логер ошибок 4хх и 5хх
 * test_api_2gis/tools/CurlReurn.py -------------------------- cURL maker
 
-### Пример теста
+### Example of test
 
-В тесте я проверяю, что передаваемому параметру page_size соответствует количество элементов на странице. В тесте используется параметризация для проверки всех возможных позитивных сценариев. Выполняется проверка статус-кода с помощью assert. Подсчитывается колличество элементов массива items. Итоговая сумма сравнивается со значением переданного параметра.
-
+In the test, I check that the passed page_size parameter == the number of elements on the page. The test uses parameterization to test all possible positive scenarios. The status code is checked using assert. The number of elements in the items array is counted. The total amount is compared with the value of the passed parameter.
 ```
 @pytest.mark.parametrize("page_size", ["5", "10", "15"])
 def test_get_regions_page_size_valid(page_size):
@@ -26,10 +25,9 @@ def test_get_regions_page_size_valid(page_size):
     assert len(response_json['items']) == int(page_size)
 ```
 
-### Пример класса API + requests (ApiRegions)
+### Example of API helper class + requests (ApiRegions)
 
-Этот класс необходим для соверешения API запроса. Я использую configparser чтобы считать base url из config.ini. На оснве BASE_URL я формирую url запроса REGIONS. Используя библиотеку requests и возможности Python, я написал функцию, которая отправляет GET запрос по REGIONS с необязательным набором параметров. Перед тем как вернуть ответ я вызываю функцию LoggerError.logging_error(), которая логирует ошибку (если таковая имеется). Подробнее о кустарном логере я напишу ниже.
-
+This class is required to make an API request. I am using configparser to read the base url from config.ini. Based on the BASE_URL, I form the url of the REGIONS request. Using the requests library and Python features, I wrote a function that sends a GET request over REGIONS with an optional set of parameters. Before returning a response, I call the LoggerError.logging_error() function, which logs the error (if any). I will write more about the artisanal logger below.
 ```
 class ApiRegions:
     parser = configparser.ConfigParser()
@@ -51,13 +49,13 @@ class ApiRegions:
 
 ```
 
-### Логер
+### Logger
 
-Функция LoggerError.logging_error(result) принимает обязательный параметр result (результат API запроса). Также для формирования cURL запроса, который можно без проблем импортировать в Postman, я использую функцию CurlReturn.curlReturn(result). Логирование происходит в случае, если код ответа == 4хх или 5хх. Ньюансы:
+The LoggerError.logging_error(result) function takes the required parameter result (the result of the API request). Also, to form a cURL request that can be easily imported into Postman, I use the CurlReturn.curlReturn(result) function. Logging occurs if the response code == 4xx or 5xx. Nuances:
 
-* В случае, если ответ с кодом 4хх возвращает стандартный для ошибок ответ, в котором есть идентификатор ошибки, то в лог записывается код ошибки и id ошибки
+* If a response with a 4xx code returns a standard error response with an error identifier, then the error code and error id are written to the log
 
-Стандартный ответ сервера при ошибке:
+Standard server response on error:
 ```
 
 {
@@ -68,23 +66,23 @@ class ApiRegions:
 }
 
 ```
-Пример логирования:
+Example of logging:
 ```
 -------------------------------- live log call ---------------------------------
 ERROR CODE: 400 -- id: 86e976e4-c0e1-4ac6-8095-166b9286e098
 
 ```
-* Если по каким то причинам, ответ с кодом 4хх не возвращает стандартный ответ с ошибкой, то в лог запишется код ошибки и cURL для ручной проверки
+* If for some reason, the response with the 4xx code does not return a standard error response, then the error code will be written to the log and cURL for manual verification
 
-Пример логирования:
+Example of logging:
 ```
 -------------------------------- live log call ---------------------------------
 ERROR CODE: 400 --  curl --location --request GET 'https://regions-test.2gis.com/1.0/regions?page=0' --header 'User-Agent: python-requests/2.25.1' --header 'Accept-Encoding: gzip, deflate' --header 'Accept: */*' --header 'Connection: keep-alive' --header 'Content-Type: application/json'
 
 ```
-* В случае с ответом с кодом 5хх в лог записывается так же код ошибки и cURL для ручной проверки
+* In the case of a response with a 5xx code, the error code and cURL for manual verification are also written to the log
 
-Пример логирования:
+Example of logging:
 ```
 -------------------------------- live log call ---------------------------------
 ERROR CODE: 500 --  curl --location --request GET 'https://regions-test.2gis.com/1.0/regions?page=0' --header 'User-Agent: python-requests/2.25.1' --header 'Accept-Encoding: gzip, deflate' --header 'Accept: */*' --header 'Connection: keep-alive' --header 'Content-Type: application/json'
